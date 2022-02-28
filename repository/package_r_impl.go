@@ -24,10 +24,6 @@ func (r *RepositoryPackageImpl) FindById(packageId int64) (entity.Package, error
 	var p entity.Package
 	err := r.db.Where("id = ?", packageId).First(&p).Error
 	return p, err
-	// var p entity.Package
-	// err := r.db.Find(&p, packageId).Error
-	// return p, err
-
 }
 
 func (r *RepositoryPackageImpl) Create(p entity.Package) entity.Package {
