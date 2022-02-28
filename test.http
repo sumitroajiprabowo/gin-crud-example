@@ -11,18 +11,18 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/package/1
+GET http://localhost:8080/package/100
 
 
 ###
-PATCH http://localhost:8080/package/1
+PATCH http://localhost:8080/package/100
 Content-Type: application/json
 
 {
-    "name": "Update Package"
+    "name": "New Package Update"
 }
 
 
 ###
-DELETE http://localhost:8080/package/3
-
+DELETE http://localhost:8080/package/888888
+Content-Type: application/json

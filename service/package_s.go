@@ -6,9 +6,9 @@ import (
 )
 
 type PackageService interface {
-	FindAll() ([]entity.Package, error)
+	FindAll() []web.PackageResponse
 	FindById(packageId int64) (entity.Package, error)
-	Create(p web.PackageCreateRequest) (entity.Package, error)
-	Update(p web.PackageUpdateRequest) (entity.Package, error)
+	Create(request web.PackageCreateRequest) entity.Package
+	Update(request web.PackageUpdateRequest) entity.Package
 	Delete(packageId int64) (entity.Package, error)
 }
