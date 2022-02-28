@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/sumitroajiprabowo/gin-crud-example/exception"
 	"github.com/sumitroajiprabowo/gin-crud-example/helper"
 	"github.com/sumitroajiprabowo/gin-crud-example/model/entity"
 	"github.com/sumitroajiprabowo/gin-crud-example/model/web"
@@ -22,7 +21,7 @@ func (s *PackageServiceImpl) FindAll() []web.PackageResponse {
 }
 
 func (s *PackageServiceImpl) FindById(packageId int64) (entity.Package, error) {
-	p, err := s.PackageRepository.FindById(packageId)
+	p, err := s.PackageRepository.FindById(int64(packageId))
 	return p, err
 }
 
@@ -35,35 +34,31 @@ func (s *PackageServiceImpl) Create(request web.PackageCreateRequest) entity.Pac
 	createdPackage := s.PackageRepository.Create(p)
 
 	return createdPackage
-
 }
 
-func (s *PackageServiceImpl) Update(request web.PackageUpdateRequest) entity.Package {
+// Create a new package with the given request data and return the update package
+func (s *PackageServiceImpl) Update(packageId int64, request web.PackageUpdateRequest) (entity.Package, error) {
 
-	// check if package exist or not found
-	_, err := s.PackageRepository.FindById(int64(request.Id))
+	p, err := s.PackageRepository.FindById(int64(packageId))
 	if err != nil {
-		panic(exception.NewNotFoundError(err.Error()))
+		return p, err
 	}
 
-	p := entity.Package{
-		Id:   int64(request.Id),
-		Name: request.Name,
-	}
+	p.Name = request.Name
 
 	updatedPackage := s.PackageRepository.Update(p)
 
-	return updatedPackage
-
+	return updatedPackage, err
 }
 
-func (s *PackageServiceImpl) Delete(packageId int64) (entity.Package, error) {
-	_, err := s.PackageRepository.FindById(int64(packageId))
+func (s *PackageServiceImpl) Delete(packageId int64) error {
+
+	p, err := s.PackageRepository.FindById(int64(packageId))
 	if err != nil {
-		panic(exception.NewNotFoundError(err.Error()))
+		return err
 	}
 
-	deletePackage, err := s.PackageRepository.Delete(int(packageId))
+	s.PackageRepository.Delete(p)
 
-	return deletePackage, err
+	return nil
 }

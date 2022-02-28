@@ -9,5 +9,5 @@ type PackageRepository interface {
 	FindById(packageId int64) (entity.Package, error)
 	Create(p entity.Package) entity.Package
 	Update(p entity.Package) entity.Package
-	Delete(packageId int) (entity.Package, error)
+	Delete(p entity.Package)
 }

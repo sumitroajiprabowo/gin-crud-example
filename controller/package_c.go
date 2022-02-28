@@ -25,9 +25,9 @@ func (cl *PackageControllerImpl) FindAllPackages(c *gin.Context) {
 
 	// Create response data with status code and data payload (packages)
 	webResponse := web.WebResponse{
-		Code:   int(http.StatusOK), // Status code 200
-		Status: "Success",          // Status message
-		Data:   packages,           // Data payload
+		Code:   200,       // Status code 200
+		Status: "Success", // Status message
+		Data:   packages,  // Data payload
 	}
 
 	c.JSON(http.StatusOK, webResponse) // Return response
@@ -59,20 +59,9 @@ func (cl *PackageControllerImpl) CreatePackages(c *gin.Context) {
 
 // // GET /package/:id
 // // Find a packages by id
-// // GET /package/:id
-// // Find a packages by id
 func (cl *PackageControllerImpl) FindPackagesById(c *gin.Context) {
-	// // Get model if exist
-	// db := c.MustGet("db").(*gorm.DB)
-	// var p entity.Package
-	// if err := db.Where("id = ?", c.Param("id")).First(&p).Error; err != nil {
-
-	// 	exception.ErrorNotFound(c, err)
-	// 	return
-	// }
-
 	// Check with param id with FindById method
-	idString := c.Param("id")
+	idString := c.Param("packageId")
 	id, _ := strconv.Atoi(idString)
 	p, err := cl.PackageService.FindById(int64(id))
 
@@ -81,25 +70,18 @@ func (cl *PackageControllerImpl) FindPackagesById(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"Code":   int(http.StatusOK),
-		"Status": "Success",
-		"data":   p,
-	})
+	// Create response data with status code and payload data (p)
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   p,
+	}
+
+	c.JSON(http.StatusOK, webResponse) // Return response
 }
 
-func (cl *PackageControllerImpl) UpdatePackage(c *gin.Context) {
-	// Validate input id parameter (c.Param("id")) with FindById method
-	idString := c.Param("id")
-	id, _ := strconv.Atoi(idString)
-	p, err := cl.PackageService.FindById(int64(id))
-
-	if err != nil {
-		exception.ErrorNotFound(c, err) // Return 404
-		return
-	}
-
-	// Validate input
+// Create a new package with the given request data and return the update package
+func (cl *PackageControllerImpl) UpdatePackages(c *gin.Context) {
 	var input web.PackageUpdateRequest
 
 	// Validate input with binding schema
@@ -108,53 +90,40 @@ func (cl *PackageControllerImpl) UpdatePackage(c *gin.Context) {
 		return
 	}
 
-	// Update model
-	p = cl.PackageService.Update(input)
-
-	// Create response data with status code and payload data (p)
-	webResponse := web.WebResponse{
-		Code:   int(http.StatusOK), // Status code 200
-		Status: "Success",          // Status message
-		Data:   p,                  // Data payload
-	}
-
-	c.JSON(http.StatusOK, webResponse) // Return response
-}
-
-// // Get model if exist
-// db := c.MustGet("db").(*gorm.DB)
-// var p entity.Package
-// if err := db.Where("id = ?", c.Param("id")).First(&p).Error; err != nil {
-
-// 	exception.ErrorNotFound(c, err)
-// 	return
-// }
-
-// c.JSON(http.StatusOK, gin.H{
-// 	"Code":   int(http.StatusOK),
-// 	"Status": "Success",
-// 	"data":   p,
-// })
-
-func (cl *PackageControllerImpl) DeletePackages(c *gin.Context) {
-	// Validate input id parameter (c.Param("id")) with FindById method
-	idString := c.Param("id")
+	idString := c.Param("packageId")
 	id, _ := strconv.Atoi(idString)
-	p, err := cl.PackageService.FindById(int64(id))
+
+	updatedPackage, err := cl.PackageService.Update(int64(id), input)
 
 	if err != nil {
 		exception.ErrorNotFound(c, err) // Return 404
 		return
 	}
 
-	// Delete model
-	cl.PackageService.Delete(p.Id)
-
-	// Create response data with status code and payload data (p)
+	// Create response data with status code and payload data (updatedPackage)
 	webResponse := web.WebResponse{
-		Code:   int(http.StatusOK), // Status code 200
-		Status: "Success",          // Status message
+		Code:   200,
+		Status: "Success",
+		Data:   updatedPackage,
 	}
 
 	c.JSON(http.StatusOK, webResponse) // Return response
+
+}
+
+func (cl *PackageControllerImpl) DeletePackages(c *gin.Context) {
+	idString := c.Param("packageId")
+	id, _ := strconv.Atoi(idString)
+
+	err := cl.PackageService.Delete(int64(id))
+
+	if err != nil {
+		exception.ErrorNotFound(c, err) // Return 404
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"Code":   200,
+		"Status": "Success",
+	})
 }

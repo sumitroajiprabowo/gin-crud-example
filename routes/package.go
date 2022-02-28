@@ -22,8 +22,8 @@ func SetupRoutes(db *gorm.DB) *gin.Engine {
 
 	r.GET("/package", packageController.FindAllPackages)
 	r.POST("/package", packageController.CreatePackages)
-	r.GET("/package/:id", packageController.FindPackagesById)
-	r.PATCH("/package/:id", packageController.UpdatePackage)
-	// r.DELETE("/package/:id", packageController.DeletePackages)
+	r.GET("/package/:packageId", packageController.FindPackagesById)
+	r.PATCH("/package/:packageId", packageController.UpdatePackages)
+	r.DELETE("/package/:packageId", packageController.DeletePackages)
 	return r
 }
