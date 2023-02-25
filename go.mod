@@ -3,8 +3,13 @@ module github.com/sumitroajiprabowo/gin-crud-example
 go 1.17
 
 require (
+	github.com/gin-gonic/gin v1.7.7
+	gorm.io/driver/mysql v1.3.2
+	gorm.io/gorm v1.23.1
+)
+
+require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
@@ -19,9 +24,7 @@ require (
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
-	golang.org/x/sys v0.0.0-20210806184541-e5e7981a1069 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
-	gorm.io/driver/mysql v1.3.2 // indirect
-	gorm.io/gorm v1.23.1 // indirect
 )
